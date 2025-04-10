@@ -6,25 +6,28 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
-	<div class="filter-tasks">
-		<h2>Filter Tasks</h2>
+	<div class="filter-sort-controls">
+		<h2>Filter & Sort Tasks</h2>
 		<form th:action="@{/}" th:method="get">
-			<div>
+			<div class="filter-options">
 				<input type="radio" id="filterAll" name="filter" value="all" th:checked="${filter == 'all' or filter == null}" onchange="this.form.submit()">
 				<label for="filterAll">All</label>
-			</div>
-			<div>
 				<input type="radio" id="filterCompleted" name="filter" value="completed" th:checked="${filter == 'completed'}" onchange="this.form.submit()">
 				<label for="filterCompleted">Completed</label>
-			</div>
-			<div>
 				<input type="radio" id="filterIncomplete" name="filter" value="incomplete" th:checked="${filter == 'incomplete'}" onchange="this.form.submit()">
 				<label for="filterIncomplete">Incomplete</label>
 			</div>
-			<button type="submit" style="display: none;">Apply Filter</button>
+			<div class="sort-options">
+				<label for="sort">Sort By:</label>
+				<select name="sort" onchange="this.form.submit()">
+					<option value="">-- Select Sort Criteria --</option>
+					<option value="alphabet" th:selected="${sort == 'alphabet'}">By Alphabetical</option>
+					<option value="completion" th:selected="${sort == 'completion'}">By Completion Status</option>
+				</select>
+			</div>
 		</form>
 	</div>
-	<h1>My Todo List</h1>
+	<h1>My To-Do List</h1>
 	<ul>
 		<li th:each="todo : ${todoList}">
 			<div style="display: flex; align-items: center;">

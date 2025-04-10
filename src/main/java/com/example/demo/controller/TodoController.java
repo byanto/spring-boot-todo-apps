@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -69,7 +70,7 @@ public class TodoController {
 	}
 	
 	@GetMapping("/")
-	public String showAll(@RequestParam(name = "filter", required = false) String filter, Model model) {
+	public String showAll(@RequestParam(name = "filter", required = false) String filter, @RequestParam(name = "sort", required = false) String sort, Model model) {
 		List<TodoItem> list = todoList;
 		if (filter != null && !filter.isEmpty() && !filter.equals("all")) {
 			final boolean completed = filter.equals("completed");
@@ -78,8 +79,21 @@ public class TodoController {
 					.collect(Collectors.toList());
 		}
 		
+		if (sort != null && !sort.isEmpty() && !sort.equals("")) {
+			if (sort.equals("alphabet")) {
+				list = list.stream()
+						.sorted(Comparator.comparing(TodoItem::getTask))
+						.collect(Collectors.toList());
+			} else if (sort.equals("completion")) {
+				list = list.stream()
+						.sorted(Comparator.comparing(TodoItem::isCompleted))
+						.collect(Collectors.toList());
+			}
+		}
+		
 		model.addAttribute("todoList", list);
 		model.addAttribute("filter", filter);
+		model.addAttribute("sort", sort);
 		return "todolist";
 	}
 	
