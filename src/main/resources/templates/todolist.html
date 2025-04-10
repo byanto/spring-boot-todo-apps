@@ -6,6 +6,24 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
+	<div class="filter-tasks">
+		<h2>Filter Tasks</h2>
+		<form th:action="@{/}" th:method="get">
+			<div>
+				<input type="radio" id="filterAll" name="filter" value="all" th:checked="${filter == 'all' or filter == null}" onchange="this.form.submit()">
+				<label for="filterAll">All</label>
+			</div>
+			<div>
+				<input type="radio" id="filterCompleted" name="filter" value="completed" th:checked="${filter == 'completed'}" onchange="this.form.submit()">
+				<label for="filterCompleted">Completed</label>
+			</div>
+			<div>
+				<input type="radio" id="filterIncomplete" name="filter" value="incomplete" th:checked="${filter == 'incomplete'}" onchange="this.form.submit()">
+				<label for="filterIncomplete">Incomplete</label>
+			</div>
+			<button type="submit" style="display: none;">Apply Filter</button>
+		</form>
+	</div>
 	<h1>My Todo List</h1>
 	<ul>
 		<li th:each="todo : ${todoList}">

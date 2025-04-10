@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,8 +69,17 @@ public class TodoController {
 	}
 	
 	@GetMapping("/")
-	public String showAll(Model model) {
-		model.addAttribute("todoList", todoList);
+	public String showAll(@RequestParam(name = "filter", required = false) String filter, Model model) {
+		List<TodoItem> list = todoList;
+		if (filter != null && !filter.isEmpty() && !filter.equals("all")) {
+			final boolean completed = filter.equals("completed");
+			list = todoList.stream()
+					.filter(todo -> todo.isCompleted() == completed)
+					.collect(Collectors.toList());
+		}
+		
+		model.addAttribute("todoList", list);
+		model.addAttribute("filter", filter);
 		return "todolist";
 	}
 	

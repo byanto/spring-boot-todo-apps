@@ -53,3 +53,41 @@ button[type="submit"], button[type="button"] {
 button[type="submit"]:hover {
     background-color: #4cae4c;
 }
+
+.filter-tasks {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #eee; /* Optional: Add a separator */
+}
+
+.filter-tasks > div {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.filter-tasks input[type="radio"] {
+    margin-right: 5px;
+}
+
+.filter-tasks label {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.filter-tasks input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.filter-tasks input[type="radio"]:checked {
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+    background-image: radial-gradient(circle at center, white 30%, transparent 30%);
+}
