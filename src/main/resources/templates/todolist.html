@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Todo List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+	<h1>My Todo List</h1>
+	<ul>
+		<li th:each="todo : ${todoList}">
+			<div style="display: flex; align-items: center;">
+				<form th:action="@{/toggleComplete}" th:method="post" style="display: inline; margin-right: 10px;">
+					<input type="checkbox" name="completed" th:checked="${todo.completed}" onchange="this.form.submit()">
+					<span th:text="${todo.task}" th:class="${todo.completed ? 'completed' : ''}" th:id="'task-' + ${todo.id}"></span>
+					<button type="button" th:onclick="'editTodo(' + ${todo.id} + ')'" th:id="'edit-button-' + ${todo.id}">Edit</button>	
+                	<input type="hidden" name="id" th:value="${todo.id}">
+				</form>
+			</div>
+			
+			<div style="display: flex; align-items: center;">
+				<form th:action="@{/saveTodo}" th:method="post" style="display: none; margin-right: 10px; " th:id="'save-form-' + ${todo.id}">
+					<input type="text" name="task" th:value="${todo.task}">
+					<button type="submit" style="margin-right: 10px;">Save</button>
+					<button type="button" th:onclick="'cancelEdit(' + ${todo.id} + ')'">Cancel</button>
+					<input type="hidden" name="id" th:value="${todo.id}">
+				</form>
+			</div>
+			
+			<div style="display: flex; align-items: center;">
+				<form th:action="@{/deleteTodo}" th:method="post" style="display: inline;">
+					<button type="submit">Delete</button>
+					<input type="hidden" name="id" th:value="${todo.id}">
+				</form>
+			</div>
+			
+		</li>
+	</ul>
+	
+	<h2>Add New Todo</h2>
+	<form action="/addTodo" method="post">
+		<input type="text" id="task" name="task" placeholder="Enter new task">
+		<button type="submit">Add</button>
+	</form>
+	
+	<script th:inline="javascript">
+        function editTodo(id) {
+            document.getElementById('task-' + id).style.display = 'none';
+            document.getElementById('save-form-' + id).style.display = 'inline';
+            document.getElementById('edit-button-' + id).style.display = 'none';
+        }
+
+        function cancelEdit(id) {
+            document.getElementById('task-' + id).style.display = 'inline';
+            document.getElementById('save-form-' + id).style.display = 'none';
+            document.getElementById('edit-button-' + id).style.display = 'inline';
+        }
+    </script>
+    
+</body>
+</html>
